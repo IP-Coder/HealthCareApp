@@ -1,24 +1,35 @@
-import logo from './logo.svg';
 import './App.css';
+import Navebar from './components/Navebar';
+import Signup from './components/Signup';
+import Hospital from './components/Hospital';
+import Login from './components/Login';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+} from "react-router-dom";
+import HnMember from './components/HnMember';
+import HPateint from './components/HPateint';
+import Hhome from './components/Hhome';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Router>
+        <Navebar />
+        <Routes>
+          <Route exact path="/" element={<Login />} />
+          <Route exact path="/signup" element={<Signup />} />
+          <Route exact path="/login" element={<Login />} />
+          {/* <Route exact path="/Hospital" element={<Hospital />} /> */}
+          <Route exact path="/Hhome" element={<Hhome />} />
+          <Route exact path="/HnMember" element={<HnMember />} />
+          <Route exact path="/HPateint" element={<HPateint />} />
+        </Routes>
+      </Router >
+
+    </>
+
   );
 }
 

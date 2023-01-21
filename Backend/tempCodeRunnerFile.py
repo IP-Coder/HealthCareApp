@@ -1,0 +1,5 @@
+croll(-10000)
+    pt.click()
+    time.sleep(5)
+    pt.hotkey('alt', 'left')
+    time.sleep(5)
