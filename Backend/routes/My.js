@@ -59,4 +59,6 @@
 //     const otp = buffer.readUIntBE(0, 3) % 1000000; // convert the random data to a number and reduce it to the range 0-999999
 //     return String(otp).padStart(6, '0'); // format the OTP string to always have 6 digits
 // }
-// console.log("OTP: " + generateOTP()); 
+// console.log("OTP: " + generateOTP());
+
+console.log("Hello world")
