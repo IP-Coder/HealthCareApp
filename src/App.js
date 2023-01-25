@@ -1,16 +1,16 @@
 import './App.css';
 import Navebar from './components/Navebar';
-import Signup from './components/Signup';
-import Hospital from './components/Hospital';
-import Login from './components/Login';
+import Signup from './components/Authorization/Signup';
+import Login from './components/Authorization/Login';
 import {
   BrowserRouter as Router,
   Routes,
   Route,
 } from "react-router-dom";
-import HnMember from './components/HnMember';
-import HPateint from './components/HPateint';
-import Hhome from './components/Hhome';
+import HnMember from './components/Hospital/HnMember';
+import HPateint from './components/Hospital/HPateint';
+import Hhome from './components/Hospital/Hhome';
+import PatientLogin from './components/Authorization/PatientLogin';
 
 function App() {
   return (
@@ -21,10 +21,10 @@ function App() {
           <Route exact path="/" element={<Login />} />
           <Route exact path="/signup" element={<Signup />} />
           <Route exact path="/login" element={<Login />} />
-          {/* <Route exact path="/Hospital" element={<Hospital />} /> */}
           <Route exact path="/Hhome" element={<Hhome />} />
           <Route exact path="/HnMember" element={<HnMember />} />
           <Route exact path="/HPateint" element={<HPateint />} />
+          <Route exact path="/patientlogin" element={<PatientLogin />} />
         </Routes>
       </Router >
 

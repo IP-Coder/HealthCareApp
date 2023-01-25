@@ -1,7 +1,12 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 mongoose.set('bufferCommands', true);
-const UserSchema = new Schema({
+const DoctorSchema = new Schema({
+    uid: {
+        type: String,
+        required: true,
+        unique: true
+    },
     name: {
         type: String,
         required: true
@@ -29,6 +34,6 @@ const UserSchema = new Schema({
         default: Date.now
     }
 });
-User = mongoose.model('user', UserSchema);
+Doctor = mongoose.model('user', DoctorSchema);
 
-module.exports = User;
+module.exports = Doctor;

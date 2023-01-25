@@ -6,6 +6,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const fetchuser = require('../middleware/fetchuser');
 const secret = 'mysecrettoken';
+const nodemailer = require('nodemailer');
 let success = false;
 router.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "http://localhost:3000");
@@ -26,9 +27,11 @@ router.post('/createuser', [
         }
         // If no error occurred 
         try {
-            let mailuser = await User.findOne({ email: req.body.email });
+            // let mailuser = await User.findOne({ email: req.body.email });
             let phoneuser = await User.findOne({ mobile: req.body.mobile });
-            if (mailuser || phoneuser) {
+            if (
+
+                phoneuser) {
                 return res.status(400).json({ errors: [{ msg: 'User already exists' }] });
             }
             const salt = await bcrypt.genSalt(10);
@@ -112,4 +115,36 @@ router.post('/getuser', fetchuser,
         }
 
     });
+
+//Sending mail to reset password
+
+router.post('/send-email', (req, res) => {
+    const { recipient, subject, message } = req.body;
+
+    let transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: 'your-email-address@gmail.com',
+            pass: 'your-email-password'
+        }
+    });
+
+    let mailOptions = {
+        from: 'your-email-address@gmail.com',
+        to: recipient,
+        subject: subject,
+        text: message
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            res.status(500).json({ message: 'Error sending email' });
+        } else {
+            res.status(200).json({ message: 'Email sent successfully' });
+        }
+    });
+});
+
+
+
 module.exports = router;

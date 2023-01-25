@@ -70,8 +70,13 @@ export default function Login() {
                             </div>
                         </form>
                         <div className="text-center formBtn">
-                            <Link to="/signup" className=" btn btn-success"><button type="" className="btn btn-success ">Create
-                                New Account</button></Link>
+                            <Link to="/patientlogin" className=" btn btn-success">
+                                Patient Login</Link>
+
+                        </div>
+                        <div className="text-center formBtn mt-3">
+                            <Link to="/signup" className=" btn btn-success">Create
+                                New Account</Link>
 
                         </div>
                     </div>

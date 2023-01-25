@@ -19,7 +19,7 @@ export default function Hhome() {
                                 aria-describedby="emailHelp" />
                         </div>
                         <div className="row">
-                            <label htmlFor="exampleInputPassword1" className="form-label">Mobile Number</label>
+                            <label className="form-label">Mobile Number</label>
                             <div className="col-md-3">
                                 <select required id="country" name="country" className="form-control">
                                     <option data-countrycode="IN" value="91" >

@@ -1,7 +1,12 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 mongoose.set('bufferCommands', true);
-const UserSchema = new Schema({
+const PatientSchema = new Schema({
+    uid: {
+        type: String,
+        required: true,
+        unique: true
+    },
     name: {
         type: String,
         required: true
@@ -11,16 +16,12 @@ const UserSchema = new Schema({
         required: true,
         unique: true
     },
-    email: {
+    gender: {
         type: String,
         unique: true
 
     },
-    password: {
-        type: String,
-        required: true
-    },
-    type: {
+    age: {
         type: String,
         required: true
     },
@@ -29,6 +30,6 @@ const UserSchema = new Schema({
         default: Date.now
     }
 });
-User = mongoose.model('user', UserSchema);
+Patient = mongoose.model('user', PatientSchema);
 
-module.exports = User;
+module.exports = Patient;

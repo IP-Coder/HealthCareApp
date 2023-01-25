@@ -18,14 +18,45 @@
 // else {
 //     console.log('Invalid phone number');
 // }
-const phoneUtil = require('google-libphonenumber').PhoneNumberUtil.getInstance();
+// const phoneUtil = require('google-libphonenumber').PhoneNumberUtil.getInstance();
 
-const phoneNumber = '+917388476703';
+// const phoneNumber = '+917388476703';
 
-try {
-    const number = phoneUtil.parse(phoneNumber);
-    const regionCode = phoneUtil.getRegionCodeForNumber(number);
-    console.log(regionCode);
-} catch (e) {
-    console.log(e);
-}
+// try {
+//     const number = phoneUtil.parse(phoneNumber);
+//     const regionCode = phoneUtil.getRegionCodeForNumber(number);
+//     console.log(regionCode);
+// } catch (e) {
+//     console.log(e);
+// }
+
+// function MyComponent() {
+
+
+//     return (
+//         <div>
+//             <ul>
+//                 <li key={id}>Item 1</li>
+//                 <li key={shortid.generate()}>Item 2</li>
+//                 <li key={shortid.generate()}>Item 3</li>
+//             </ul>
+//         </div>
+//     );
+// }
+
+// function generateOTP() {
+//     const array = new Uint32Array(1); // array to store the random number
+//     window.crypto.getRandomValues(array); // fill the array with cryptographically secure random values
+//     const otp = array[0] % 1000000; // generate a random number between 0 and 999,999
+//     return String(otp).padStart(6, '0'); // format the OTP string to always have 6 digits
+// }
+// console.log("OTP: " + generateOTP());
+
+// const crypto = require('crypto');
+
+// function generateOTP() {
+//     const buffer = crypto.randomBytes(3); // generate 3 bytes of random data
+//     const otp = buffer.readUIntBE(0, 3) % 1000000; // convert the random data to a number and reduce it to the range 0-999999
+//     return String(otp).padStart(6, '0'); // format the OTP string to always have 6 digits
+// }
+// console.log("OTP: " + generateOTP()); 
