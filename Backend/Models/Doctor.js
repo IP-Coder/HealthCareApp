@@ -17,9 +17,7 @@ const DoctorSchema = new Schema({
         unique: true
     },
     email: {
-        type: String,
-        unique: true
-
+        type: String
     },
     password: {
         type: String,
@@ -34,6 +32,6 @@ const DoctorSchema = new Schema({
         default: Date.now
     }
 });
-Doctor = mongoose.model('user', DoctorSchema);
+Doctor = mongoose.model('Doctor', DoctorSchema);
 
 module.exports = Doctor;

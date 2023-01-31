@@ -1,7 +1,53 @@
 import React from 'react'
+import { useState } from 'react'
 import Hnave from './Hnave'
 
 const HnMember = () => {
+    const [memberData, setmemberData] = useState({ email: "", phone: "", country: "", password: "", name: "" })
+    const handleSubmit = async (e) => {
+
+        e.preventDefault();
+        const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        const mobileRegex = /^(?:\+\d{1,3}|\d{1,4})[\s-]?\d{3}[\s-]?\d{4}$/;
+        const Fmobile = '+' + memberData.country + memberData.phone;
+        if (mobileRegex.test(memberData.phone)) {
+            console.log(memberData.country)
+            console.log("valid contact");
+
+
+            try {
+                const response = await fetch('http://localhost:4000/api/auth/createuser', {
+                    method: 'POST',
+                    body: JSON.stringify({ name: memberData.name, email: memberData.email, mobile: Fmobile, password: memberData.password, type: 'Doctor' }),
+                    headers: { 'Content-Type': 'application/json', }
+                });
+                const data = await response.json();
+                console.log(data)
+                // if (data.success) {
+                //     localStorage.setItem('authtoken', data.authtoken);
+                //     // redirect to protected page 
+                //     history('/Hhome')
+                //     console.log("Hello")
+
+                // } else {
+                //     // display error message
+                // }
+            } catch (err) {
+                console.error(err);
+            }
+
+        }
+        else {
+            console.log(Fmobile)
+            console.log("invalid contact");
+        }
+    }
+
+
+    const onChange = (e) => {
+        setmemberData({ ...memberData, [e.target.name]: e.target.value })
+    }
+
     return (
         <>
             <Hnave />
@@ -85,16 +131,16 @@ const HnMember = () => {
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body">
-                            <form action="addDoctor.php" method="POST">
+                            <form onSubmit={handleSubmit}>
                                 <div className="col-12">
                                     <label htmlFor="exampleInputEmail1" className="form-label">Doctor Name</label>
-                                    <input required type="text" name="name" className="form-control" id="exampleInputEmail1"
+                                    <input onChange={onChange} required type="text" name="name" className="form-control" id="exampleInputEmail1"
                                         aria-describedby="emailHelp" />
                                 </div>
                                 <div className="row">
                                     <label htmlFor="exampleInputPassword1" className="form-label">Mobile Number</label>
                                     <div className="col-md-3">
-                                        <select required id="country" name="country" className="form-control">
+                                        <select required id="country" onChange={onChange} name="country" className="form-control">
                                             <option data-countrycode="IN" value="91" >
                                                 India (+91)
                                             </option>
@@ -740,7 +786,7 @@ const HnMember = () => {
                                         </select>
                                     </div>
                                     <div className="col-md-9">
-                                        <input required type="tel" name="phone" className="form-control"
+                                        <input onChange={onChange} required type="tel" name="phone" className="form-control"
                                             id="exampleInputPassword1" />
                                     </div>
                                 </div>
@@ -748,12 +794,12 @@ const HnMember = () => {
                                 <div className="row">
                                     <div className="col-md-6">
                                         <label htmlFor="exampleInputPassword1" className="form-label">E-Mail</label>
-                                        <input required type="email" name="email" className="form-control"
+                                        <input onChange={onChange} required type="email" name="email" className="form-control"
                                             id="exampleInputPassword1" />
                                     </div>
                                     <div className="col-md-6">
                                         <label htmlFor="exampleInputPassword1" className="form-label">Password</label>
-                                        <input required type="text" name="password" className="form-control"
+                                        <input onChange={onChange} required type="text" name="password" className="form-control"
                                             id="exampleInputPassword1" />
                                     </div>
                                 </div>

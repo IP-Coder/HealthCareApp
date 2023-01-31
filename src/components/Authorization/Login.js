@@ -11,7 +11,7 @@ export default function Login() {
 
         e.preventDefault();
         try {
-            const response = await fetch('https://pmhealthcare.vercel.app/api/auth/authuser', {
+            const response = await fetch('http://localhost:4000/api/auth/authuser', {
                 method: 'POST',
                 body: JSON.stringify({ email: loginData.email, password: loginData.password }),
                 headers: { 'Content-Type': 'application/json', }

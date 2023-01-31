@@ -1,7 +1,62 @@
-import React from 'react'
 import Hnave from './Hnave'
-
+import React, { useState } from 'react';
 export default function Hhome() {
+
+    const [selectedCheks, setSelectedCheks] = useState([]);
+    const [PatientData, setPatientData] = useState({ pname: "", country: "", gender: "", phone: "", age: "" });
+
+    const oncheckChange = (event) => {
+        if (event.target.checked) {
+            setSelectedCheks([...selectedCheks, event.target.value]);
+        } else {
+            setSelectedCheks(selectedCheks.filter((dieses) => dieses !== event.target.value));
+        }
+    };
+    const onChange = (e) => {
+        setPatientData({ ...PatientData, [e.target.name]: e.target.value })
+
+    }
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        const mobileRegex = /^(?:\+\d{1,3}|\d{1,4})[\s-]?\d{3}[\s-]?\d{4}$/;
+        const Fmobile = "+" + PatientData.country + PatientData.phone;
+        if (mobileRegex.test(PatientData.phone)) {
+            console.log("valid contact");
+
+
+            try {
+                const response = await fetch('http://localhost:4000/api/patient/addpatient', {
+                    method: 'POST',
+                    body: JSON.stringify({ pname: PatientData.pname, gender: PatientData.gender, dieses: selectedCheks, mobile: Fmobile, age: PatientData.age }),
+                    headers: { 'Content-Type': 'application/json' },
+                });
+                const data = await response.json();
+                console.log(data)
+                // if (data.success) {
+                //     localStorage.setItem('authtoken', data.authtoken);
+                //     // redirect to protected page 
+                //     history('/Hhome')
+                //     console.log("Hello")
+
+                // } else {
+                //     // display error message
+                // }
+            } catch (err) {
+                console.error(err);
+            }
+
+        }
+        else {
+            console.log(Fmobile)
+            console.log("invalid contact");
+        }
+    };
+
+
+
+    const type = "";
     return (
         // < !--Home Start-- >
         <>
@@ -12,16 +67,17 @@ export default function Hhome() {
                     <h1 className="fs-3 c-white">Home</h1>
                 </div>
                 <div className="p-3 bg-white">
-                    <form className="row" method="POST" action="addPatient.php">
+                    <form className="row" onSubmit={handleSubmit}>
                         <div className="col-12">
                             <label htmlFor="exampleInputEmail1" className="form-label">Patient Name</label>
-                            <input required type="text" name="name" className="form-control" id="exampleInputEmail1"
+                            <input required type="text" onChange={onChange} name="pname" className="form-control" id="exampleInputEmail1"
                                 aria-describedby="emailHelp" />
                         </div>
                         <div className="row">
                             <label className="form-label">Mobile Number</label>
                             <div className="col-md-3">
-                                <select required id="country" name="country" className="form-control">
+                                <select required id="country" onChange={onChange} name="country" className="form-control">
+                                    <option value="" hidden >Country Code</option>
                                     <option data-countrycode="IN" value="91" >
                                         India (+91)
                                     </option>
@@ -667,14 +723,14 @@ export default function Hhome() {
                                 </select>
                             </div>
                             <div className="col-md-9">
-                                <input required type="tel" name="phone" className="form-control" id="exampleInputPassword1" />
+                                <input required type="tel" onChange={onChange} name="phone" className="form-control" id="exampleInputPassword1" />
                             </div>
                         </div>
 
                         <div className="row">
                             <div className="col-md-5">
                                 <label htmlFor="exampleInputPassword1" className="form-label">Gender</label>
-                                <select required id="country" name="gender" className="form-control">
+                                <select required id="gender" onChange={onChange} name="gender" className="form-control">
                                     <option data-countrycode="IN" value="Male" >
                                         Male
                                     </option>
@@ -684,7 +740,7 @@ export default function Hhome() {
                             </div>
                             <div className="col-md-6">
                                 <label htmlFor="exampleInputPassword1" className="form-label">Pateint Age </label>
-                                <input required type="tel" name="age" className="form-control" id="exampleInputPassword1" />
+                                <input required type="number" onChange={onChange} name="age" className="form-control" id="exampleInputPassword1" />
                             </div>
                         </div>
 
@@ -692,50 +748,50 @@ export default function Hhome() {
                         <div className="container mt-3 p-1 border border-primary">
                             <div className="shape form-check-label form-check form-check-inline">
                                 <div className="form-check ">
-                                    <input className="form-check-input" type="checkbox" id="ScreeningType1" value="option1" />
+                                    <input className="form-check-input" type="checkbox" name="dieses" onChange={oncheckChange} id="ScreeningType1" value="option1" />
                                     <label className="form-check-label" htmlFor="ScreeningType1">Complete Blood Count</label>
                                 </div>
                             </div>
                             <div className="shape form-check-label form-check form-check-inline">
                                 <div className="form-check ">
-                                    <input className="form-check-input" type="checkbox" id="ScreeningType2" value="option1" />
+                                    <input className="form-check-input" type="checkbox" name="dieses" onChange={oncheckChange} id="ScreeningType2" value="option2" />
                                     <label className="form-check-label" htmlFor="ScreeningType2">Complete Urine Examination</label>
                                 </div>
                             </div>
                             <div className="shape form-check-label form-check form-check-inline">
                                 <div className="form-check ">
-                                    <input className="form-check-input" type="checkbox" id="ScreeningType3" value="option1" />
+                                    <input className="form-check-input" type="checkbox" name="dieses" onChange={oncheckChange} id="ScreeningType3" value="option3" />
                                     <label className="form-check-label" htmlFor="ScreeningType3">Liver Function Test</label>
                                 </div>
                             </div>
                             <div className="shape form-check-label form-check form-check-inline">
                                 <div className="form-check ">
-                                    <input className="form-check-input" type="checkbox" id="ScreeningType4" value="option1" />
+                                    <input className="form-check-input" type="checkbox" name="dieses" onChange={oncheckChange} id="ScreeningType4" value="option4" />
                                     <label className="form-check-label" htmlFor="ScreeningType4">Kidney Function Test</label>
                                 </div>
                             </div>
                             <div className="shape form-check-label form-check form-check-inline">
                                 <div className="form-check ">
-                                    <input className="form-check-input" type="checkbox" id="ScreeningType5" value="option1" />
+                                    <input className="form-check-input" type="checkbox" name="dieses" onChange={oncheckChange} id="ScreeningType5" value="option5" />
                                     <label className="form-check-label" htmlFor="ScreeningType5">Thyroid Function Test</label>
                                 </div>
                             </div>
                             <div className="shape form-check-label form-check form-check-inline">
                                 <div className="form-check ">
-                                    <input className="form-check-input" type="checkbox" id="ScreeningType6" value="option1" />
+                                    <input className="form-check-input" type="checkbox" name="dieses" onChange={oncheckChange} id="ScreeningType6" value="option6" />
                                     <label className="form-check-label" htmlFor="ScreeningType6">Lipid Profile</label>
                                 </div>
                             </div>
                             <div className="shape form-check-label form-check form-check-inline">
                                 <div className="form-check ">
-                                    <input className="form-check-input" type="checkbox" id="ScreeningType7" value="option1" />
+                                    <input className="form-check-input" type="checkbox" name="dieses" onChange={oncheckChange} id="ScreeningType7" value="option7" />
                                     <label className="form-check-label" htmlFor="ScreeningType7">Diabetes Profile</label>
                                 </div>
                             </div>
 
                         </div>
                         <div className="text-center mt-3 formBtn">
-                            <button type="submit" className="btn btn-primary">
+                            <button type="submit" disabled={PatientData.phone.length < 10 && PatientData.age === "" && PatientData.gender === "" && PatientData.pname.length < 3 && PatientData.country === ""} className="btn btn-primary">
                                 Submit
                             </button>
                             <hr />

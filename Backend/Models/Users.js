@@ -2,6 +2,11 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 mongoose.set('bufferCommands', true);
 const UserSchema = new Schema({
+    uid: {
+        type: String,
+        required: true,
+        unique: true
+    },
     name: {
         type: String,
         required: true
@@ -12,15 +17,17 @@ const UserSchema = new Schema({
         unique: true
     },
     email: {
-        type: String,
-        unique: true
-
+        type: String
     },
     password: {
         type: String,
         required: true
     },
     type: {
+        type: String,
+        required: true
+    },
+    createdbyHosp: {
         type: String,
         required: true
     },

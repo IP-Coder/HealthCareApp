@@ -5,16 +5,15 @@ import { useState } from 'react'
 export default function PatientLogin() {
     let history = useNavigate();
     let Type = ["Patient", "Doctor", "Hospital", "Pharmacy"]
-    const [loginData, setloginData] = useState({ mobile: '' })
+    const [loginData, setloginData] = useState({ mobile: '', country: '' })
     const handleSubmit = async (e) => {
         e.preventDefault();
-        let mobile = '';
+        const mobile = loginData.country + loginData.mobile;
         const mobileRegex = /^(?:\+\d{1,3}|\d{1,4})[\s-]?\d{3}[\s-]?\d{4}$/;
-        if (mobileRegex.test(loginData.mobile)) {
+        if (mobileRegex.test(mobile)) {
             console.log("valid mobile number");
-            mobile = loginData.mobile;
             try {
-                const response = await fetch('http://localhost:4000/api/patient/patientlogin', {
+                const response = await fetch('http://localhost:4000/api/patient/getotp', {
                     method: 'POST',
                     body: JSON.stringify({ mobile }),
                     headers: { 'Content-Type': 'application/json', }
@@ -22,13 +21,12 @@ export default function PatientLogin() {
                 const data = await response.json();
                 console.log(data)
                 if (data.success) {
-
                     console.log("Hello")
-
                 } else {
                     // display error message
                 }
             } catch (err) {
+                console.log("Nahi hua");
                 console.error(err);
             }
         } else {

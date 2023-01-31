@@ -10,6 +10,7 @@ import {
 import HnMember from './components/Hospital/HnMember';
 import HPateint from './components/Hospital/HPateint';
 import Hhome from './components/Hospital/Hhome';
+import Text from './components/Hospital/Text';
 import PatientLogin from './components/Authorization/PatientLogin';
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
           <Route exact path="/HnMember" element={<HnMember />} />
           <Route exact path="/HPateint" element={<HPateint />} />
           <Route exact path="/patientlogin" element={<PatientLogin />} />
+          <Route exact path="/text" element={<Text />} />
         </Routes>
       </Router >
 

@@ -1,19 +1,21 @@
-const express = require('express');
-const User = require('../Models/Users');
-const router = express.Router();
-const { body, validationResult } = require('express-validator');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const fetchuser = require('../middleware/fetchuser');
-const secret = 'mysecrettoken';
-const nodemailer = require('nodemailer');
-let success = false;
+const express = require('express'); // Importing the express module
+const UserSchema = require('../Models/Users');  // Importing the UserSchema
+const router = express.Router(); // Creating a router
+const { body, validationResult } = require('express-validator'); // Importing the express-validator module
+const bcrypt = require('bcryptjs'); // Importing the bcryptjs module
+const jwt = require('jsonwebtoken');    // Importing the jwt module
+const fetchuser = require('../middleware/fetchuser');   // Importing the fetchuser middleware
+const secret = 'mysecrettoken'; // Secret key for JWT
+const nodemailer = require('nodemailer'); // Importing the nodemailer module
+const functions = require('../Functions/function'); // Importing the function file
+let success = false; // Variable to check if the user is created or not
 router.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "http://localhost:3000");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
-});
-//Request to create a user
+}); // Middleware to allow cross origin requests
+
+//Request to create a USER
 router.post('/createuser', [
     body('name', 'Name is required').not().isEmpty(),
     body('password', 'Please enter a password with 6 or more characters').isLength({ min: 6 })
@@ -23,38 +25,39 @@ router.post('/createuser', [
         const errors = validationResult(req);
         //Error handling
         if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
+            return res.status(400).json({ errors: errors.array() }); // If error occurred
         }
         // If no error occurred 
         try {
-            // let mailuser = await User.findOne({ email: req.body.email });
-            let phoneuser = await User.findOne({ mobile: req.body.mobile });
-            if (
-
-                phoneuser) {
-                return res.status(400).json({ errors: [{ msg: 'User already exists' }] });
+            // let mailuser = await UserSchema.findOne({ email: req.body.email });
+            let phoneuser = await UserSchema.findOne({ mobile: req.body.mobile });
+            if (phoneuser) {
+                return res.status(400).json({ errors: [{ msg: 'User already exists' }] }); // If user already exists
             }
             const salt = await bcrypt.genSalt(10);
             const SecurePassword = await bcrypt.hash(req.body.password, salt);
+            const UID = functions.generateUID(req.body.mobile);
+            let email = req.body.email || null; // If email is not provided
             // Creating user to the database
-            user = await User.create({
+            user = await UserSchema.create({
+                uid: UID,
                 name: req.body.name,
-                email: req.body.email,
+                email: email,
                 password: SecurePassword,
                 mobile: req.body.mobile,
                 type: req.body.type
 
 
-            })
+            }) // Creating user to the database
             const data = {
                 user: {
                     id: user.id
                 }
-            }
+            } // Creating data for JWT
             // Creating auth token 
             const authtoken = jwt.sign(data, secret)
             // Sending authtoken
-            res.send({ success: true, authtoken })
+            res.send({ success: true, authtoken }) // Sending authtoken
         }
         catch (error) {
             console.error(error.message);
@@ -63,7 +66,7 @@ router.post('/createuser', [
 
     });
 
-//Request to authenticate a user
+// Request to authenticate a user
 router.post('/authuser', [
     body('email', 'Please include a valid email').isEmail(),
     body('password', 'Please enter a password with 6 or more characters').isLength({ min: 6 })
@@ -78,7 +81,7 @@ router.post('/authuser', [
         const { email, password } = req.body;
         try {
 
-            const user = await User.findOne({ email: req.body.email })
+            const user = await UserSchema.findOne({ email: req.body.email })
             if (!user) {
                 return res.status(400).json({ errors: [{ msg: 'Invalid Credentialss' }] });
             }
@@ -107,7 +110,7 @@ router.post('/getuser', fetchuser,
     async (req, res) => {
         try {
             userId = req.user.id;
-            const user = await User.findById(userId).select("-password");
+            const user = await UserSchema.findById(userId).select("-password");
             res.send(user);
         } catch (error) {
             console.error(error.message);
@@ -144,7 +147,4 @@ router.post('/send-email', (req, res) => {
         }
     });
 });
-
-
-
 module.exports = router;

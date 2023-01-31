@@ -61,4 +61,31 @@
 // }
 // console.log("OTP: " + generateOTP());
 
-console.log("Hello world")
+// console.log("Hello world")
+// const express = require('express');
+// const router = express.Router();
+// const twilio = require('twilio');
+// const client = new twilio(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
+
+// router.post('/send-otp', (req, res) => {
+//     const { phoneNumber } = req.body;
+//     const otp = Math.floor(Math.random() * 1000000);
+//     client.messages.create({
+//         from: 'whatsapp:+14155238886',
+//         to: `whatsapp:${phoneNumber}`,
+//         body: `Your OTP is ${otp}`,
+//     }).then(message => {
+//         // Save the OTP in a database for later verification
+//         res.json({ message: 'OTP sent successfully' });
+//     }).catch(error => {
+//         res.json({ error });
+//     });
+// });
+
+// module.exports = router;
+const functions = require('../Functions/function');
+// import { generateOTP } from '../Functions/function';
+// const otp = functions.generatePrimaryKey('shri@gmail.com');
+const otp = functions.generateOTP();
+
+console.log(otp);

@@ -5,47 +5,49 @@ export default function Signup() {
     let history = useNavigate();
 
     const [loginData, setloginData] = useState({ email: "", phone: "", country: "", password: "", name: "", type: "" })
-
-
-
     const handleSubmit = async (e) => {
 
         e.preventDefault();
         const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
         const mobileRegex = /^(?:\+\d{1,3}|\d{1,4})[\s-]?\d{3}[\s-]?\d{4}$/;
-        const Fmobile = loginData.country + loginData.phone;
-        if (mobileRegex.test(Fmobile)) {
-            console.log("valid data");
+        const Fmobile = '+' + loginData.country + loginData.phone;
+        if (mobileRegex.test(loginData.phone)) {
+            console.log(loginData.country)
+            console.log("valid contact");
+
+
+            try {
+                const response = await fetch('http://localhost:4000/api/auth/createuser', {
+                    method: 'POST',
+                    body: JSON.stringify({ name: loginData.name, email: loginData.email, mobile: Fmobile, password: loginData.password, type: loginData.type }),
+                    headers: { 'Content-Type': 'application/json', }
+                });
+                const data = await response.json();
+                console.log(data)
+                // if (data.success) {
+                //     localStorage.setItem('authtoken', data.authtoken);
+                //     // redirect to protected page 
+                //     history('/Hhome')
+                //     console.log("Hello")
+
+                // } else {
+                //     // display error message
+                // }
+            } catch (err) {
+                console.error(err);
+            }
+
         }
         else {
             console.log(Fmobile)
             console.log("invalid contact");
         }
-        try {
-            const response = await fetch('http://localhost:4000/api/auth/createuser', {
-                method: 'POST',
-                body: JSON.stringify({ name: loginData.name, email: loginData.email, mobile: Fmobile, password: loginData.password, type: loginData.type }),
-                headers: { 'Content-Type': 'application/json', }
-            });
-            const data = await response.json();
-            console.log(data)
-            // if (data.success) {
-            //     localStorage.setItem('authtoken', data.authtoken);
-            //     // redirect to protected page 
-            //     history('/Hhome')
-            //     console.log("Hello")
-
-            // } else {
-            //     // display error message
-            // }
-        } catch (err) {
-            console.error(err);
-        }
     }
+
+
     const onChange = (e) => {
         setloginData({ ...loginData, [e.target.name]: e.target.value })
     }
-
     let Type = ["Patient", "Doctor", "Hospital", "Pharmacy"]
     return (
         <div className="container Main">
@@ -71,7 +73,8 @@ export default function Signup() {
                                 <div className="row">
                                     <label className="form-label">Mobile Number</label>
                                     <div className="col">
-                                        <select required id="country" name="country" className="form-control">
+                                        <select required id="country" onChange={onChange} name="country" className="form-control">
+                                            <option value="" defaultValue={Type} hidden >Country Code</option>
                                             <option data-countrycode="IN" value="91" >
                                                 India (+91)
                                             </option>
@@ -724,7 +727,7 @@ export default function Signup() {
 
                             <div className="col-md-12 mb-2">
                                 <label className="form-label">Email address <small>(Optional)</small> </label>
-                                <input onChange={onChange} placeholder="Email address" type="email" name="mail" className="form-control " id="exampleInputPassword1" />
+                                <input onChange={onChange} placeholder="Email address" type="email" name="email" className="form-control " id="exampleInputPassword1" />
                             </div>
 
                             <div className="col-md-12 my-2">
@@ -734,7 +737,7 @@ export default function Signup() {
                             </div>
                             <div className=" ">
                                 <label className="form-label" >Type</label>
-                                <select placeholder='Type' required id="country" onChange={onChange} name="type" className="form-control mb-2">
+                                <select placeholder='Type' required id="type" onChange={onChange} name="type" className="form-control mb-2">
                                     <option value="" defaultValue={Type} hidden >Type</option>
                                     <option value="Doctor">Doctor</option>
                                     <option value="Hospital">Hospital</option>

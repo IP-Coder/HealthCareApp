@@ -25,11 +25,15 @@ const PatientSchema = new Schema({
         type: String,
         required: true
     },
+    fullbodyscreening: {
+        type: [String],
+        required: true
+    },
     date: {
         type: Date,
         default: Date.now
     }
 });
-Patient = mongoose.model('user', PatientSchema);
+Patient = mongoose.model('patient', PatientSchema);
 
 module.exports = Patient;
