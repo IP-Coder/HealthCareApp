@@ -1,13 +1,12 @@
 import React from 'react'
 import { useState } from 'react'
-import Hnave from './Hnave'
+
 
 const HnMember = () => {
     const [memberData, setmemberData] = useState({ email: "", phone: "", country: "", password: "", name: "" })
     const handleSubmit = async (e) => {
 
         e.preventDefault();
-        const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
         const mobileRegex = /^(?:\+\d{1,3}|\d{1,4})[\s-]?\d{3}[\s-]?\d{4}$/;
         const Fmobile = '+' + memberData.country + memberData.phone;
         if (mobileRegex.test(memberData.phone)) {
@@ -50,8 +49,7 @@ const HnMember = () => {
 
     return (
         <>
-            <Hnave />
-            <section style={{ marginTop: "3rem" }} className=" container">
+            <section className=" ">
                 <div className="bg-primary text-center">
                     <h1 className="fs-3 c-white">New Member</h1>
                 </div>

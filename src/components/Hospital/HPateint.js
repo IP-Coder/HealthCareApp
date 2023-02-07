@@ -1,11 +1,10 @@
 import React from 'react'
-import Hnave from './Hnave'
+
 
 const HPateint = () => {
     return (
         <>
-            <Hnave
-            />
+            s
             <div>
                 i am HPateints
             </div>

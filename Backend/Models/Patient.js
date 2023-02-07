@@ -18,7 +18,7 @@ const PatientSchema = new Schema({
     },
     gender: {
         type: String,
-        unique: true
+        required: true
 
     },
     age: {

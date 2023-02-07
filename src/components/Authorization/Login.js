@@ -20,7 +20,7 @@ export default function Login() {
             if (data.success) {
                 localStorage.setItem('authtoken', data.authtoken);
                 // redirect to protected page 
-                history('/Hhome')
+                history('/Hospital')
                 console.log("Hello")
 
             } else {

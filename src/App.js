@@ -7,11 +7,10 @@ import {
   Routes,
   Route,
 } from "react-router-dom";
-import HnMember from './components/Hospital/HnMember';
-import HPateint from './components/Hospital/HPateint';
-import Hhome from './components/Hospital/Hhome';
 import Text from './components/Hospital/Text';
 import PatientLogin from './components/Authorization/PatientLogin';
+import Hospital from './components/Hospital/Hospital';
+import SplashScreen from './components/Authorization/SplashScreen';
 
 function App() {
   return (
@@ -19,12 +18,10 @@ function App() {
       <Router>
         <Navebar />
         <Routes>
-          <Route exact path="/" element={<Login />} />
+          <Route exact path="/" element={<SplashScreen />} />
           <Route exact path="/signup" element={<Signup />} />
           <Route exact path="/login" element={<Login />} />
-          <Route exact path="/Hhome" element={<Hhome />} />
-          <Route exact path="/HnMember" element={<HnMember />} />
-          <Route exact path="/HPateint" element={<HPateint />} />
+          <Route exact path="/Hospital" element={<Hospital />} />
           <Route exact path="/patientlogin" element={<PatientLogin />} />
           <Route exact path="/text" element={<Text />} />
         </Routes>

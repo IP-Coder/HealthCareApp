@@ -1,4 +1,3 @@
-import Hnave from './Hnave'
 import React, { useState } from 'react';
 export default function Hhome() {
 
@@ -60,8 +59,8 @@ export default function Hhome() {
     return (
         // < !--Home Start-- >
         <>
-            <Hnave />
-            <section style={{ marginTop: "3rem" }} className="container">
+
+            <section className="continer">
 
                 <div className="bg-primary text-center">
                     <h1 className="fs-3 c-white">Home</h1>
@@ -723,7 +722,7 @@ export default function Hhome() {
                                 </select>
                             </div>
                             <div className="col-md-9">
-                                <input required type="tel" onChange={onChange} name="phone" className="form-control" id="exampleInputPassword1" />
+                                <input required type="number" onChange={onChange} name="phone" className="form-control" id="exampleInputPassword1" />
                             </div>
                         </div>
 
@@ -791,7 +790,7 @@ export default function Hhome() {
 
                         </div>
                         <div className="text-center mt-3 formBtn">
-                            <button type="submit" disabled={PatientData.phone.length < 10 && PatientData.age === "" && PatientData.gender === "" && PatientData.pname.length < 3 && PatientData.country === ""} className="btn btn-primary">
+                            <button type="submit" disabled={PatientData.phone.length < 10 || PatientData.age === "" || PatientData.gender === "" || PatientData.pname.length < 3 || PatientData.country === ""} className="btn btn-primary">
                                 Submit
                             </button>
                             <hr />

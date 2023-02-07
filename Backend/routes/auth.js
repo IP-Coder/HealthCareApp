@@ -147,4 +147,21 @@ router.post('/send-email', (req, res) => {
         }
     });
 });
+
+router.post('/check-login', (req, res) => {
+    // check if the user is logged in, e.g. by checking the presence of a JWT token
+    const token = req.body.token;
+    // in the request headers
+    // if the user is logged in:
+    console.log(token);
+    if (token) {
+        res.json({ isLoggedIn: true });
+    }
+    // if the user is not logged in:
+    else {
+        res.json({ isLoggedIn: false });
+    }
+});
 module.exports = router;
+
+

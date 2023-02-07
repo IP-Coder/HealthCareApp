@@ -19,17 +19,17 @@ export default function Hnave() {
             <div className="container text-center text-bg-primary " style={mystyle}>
                 <div className="row">
                     <div className="col">
-                        <Link className="text-bg-primary text-decoration-none" to="/Hhome">Home
+                        <Link className="text-bg-primary text-decoration-none" to="/Hospital/Home">Home
 
                         </Link>
                     </div>
                     <div className="col">
-                        <Link className="text-bg-primary text-decoration-none" to="/HnMember">New Member
+                        <Link className="text-bg-primary text-decoration-none" to="/Hospital/Member">New Member
 
                         </Link>
                     </div>
                     <div className="col">
-                        <Link className="text-bg-primary text-decoration-none" to="/HPateint">Patient
+                        <Link className="text-bg-primary text-decoration-none" to="/Hospital/Patient">Patient
 
                         </Link>
                     </div>
