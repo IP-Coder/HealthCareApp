@@ -1,36 +1,40 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react'
 
-
-const HnMember = () => {
+const HnMember = (props) => {
     const [memberData, setmemberData] = useState({ email: "", phone: "", country: "", password: "", name: "" })
+    let createbyhosp = '';
+    const getUser = async () => {
+        const getUser = await fetch('http://localhost:4000/api/auth/getuser', {
+            method: 'POST',
+            headers: { 'auth-token': localStorage.getItem('authtoken'), }
+        });
+        const user = await getUser.json();
+        createbyhosp = user.uid;
+        console.log(user)
+    }
     const handleSubmit = async (e) => {
-
         e.preventDefault();
         const mobileRegex = /^(?:\+\d{1,3}|\d{1,4})[\s-]?\d{3}[\s-]?\d{4}$/;
         const Fmobile = '+' + memberData.country + memberData.phone;
         if (mobileRegex.test(memberData.phone)) {
             console.log(memberData.country)
             console.log("valid contact");
-
-
             try {
+                getUser();
                 const response = await fetch('http://localhost:4000/api/auth/createuser', {
                     method: 'POST',
-                    body: JSON.stringify({ name: memberData.name, email: memberData.email, mobile: Fmobile, password: memberData.password, type: 'Doctor' }),
+                    body: JSON.stringify({ name: memberData.name, email: memberData.email, mobile: Fmobile, password: memberData.password, type: 'Doctor', createdbyHosp: createbyhosp }),
                     headers: { 'Content-Type': 'application/json', }
                 });
                 const data = await response.json();
                 console.log(data)
-                // if (data.success) {
-                //     localStorage.setItem('authtoken', data.authtoken);
-                //     // redirect to protected page 
-                //     history('/Hhome')
-                //     console.log("Hello")
-
-                // } else {
-                //     // display error message
-                // }
+                if (data.success) {
+                    props.showAlert("Member Added Successfully", "success");
+                }
+                if (data.errors) {
+                    props.showAlert(data.errors[0].msg, "danger");
+                }
             } catch (err) {
                 console.error(err);
             }
@@ -42,11 +46,26 @@ const HnMember = () => {
         }
     }
 
-
     const onChange = (e) => {
         setmemberData({ ...memberData, [e.target.name]: e.target.value })
     }
+    useEffect(() => {
+        const fetchdata = async () => {
+            try {
+                const response = await fetch('http://localhost:4000/api/datafetch/table', {
+                    method: 'POST',
+                    body: JSON.stringify({ createdbyHosp: createbyhosp }),
+                    headers: { 'Content-Type': 'application/json', }
+                });
+                const data = await response.json();
+                console.log(data.isLoggedIn)
 
+            } catch (err) {
+                console.error(err);
+            }
+        }
+        fetchdata();
+    }, []);
     return (
         <>
             <section className=" ">
@@ -59,47 +78,7 @@ const HnMember = () => {
                         className="scrollspy-example scroller" tabIndex="0">
                         <ol className="list-group list-group-numbered">
                             <li className="list-group-item d-flex justify-content-between align-items-start">
-                                <a href="patientdetail.php?patient_id=' . $name . '" className="ms-2 me-auto">
-                                    <div className="fw-bold">' . $name . '</div>
-                                    <div className="">' . $email . '</div>
-                                    <div className="">' . $phone . '</div>
-                                </a>
-                                <a href="#" className="mt-5 badge bg-primary rounded-pill">edit</a>
-                            </li>
-                            <li className="list-group-item d-flex justify-content-between align-items-start">
-                                <a href="patientdetail.php?patient_id=' . $name . '" className="ms-2 me-auto">
-                                    <div className="fw-bold">' . $name . '</div>
-                                    <div className="">' . $email . '</div>
-                                    <div className="">' . $phone . '</div>
-                                </a>
-                                <a href="#" className="mt-5 badge bg-primary rounded-pill">edit</a>
-                            </li>
-                            <li className="list-group-item d-flex justify-content-between align-items-start">
-                                <a href="patientdetail.php?patient_id=' . $name . '" className="ms-2 me-auto">
-                                    <div className="fw-bold">' . $name . '</div>
-                                    <div className="">' . $email . '</div>
-                                    <div className="">' . $phone . '</div>
-                                </a>
-                                <a href="#" className="mt-5 badge bg-primary rounded-pill">edit</a>
-                            </li>
-                            <li className="list-group-item d-flex justify-content-between align-items-start">
-                                <a href="patientdetail.php?patient_id=' . $name . '" className="ms-2 me-auto">
-                                    <div className="fw-bold">' . $name . '</div>
-                                    <div className="">' . $email . '</div>
-                                    <div className="">' . $phone . '</div>
-                                </a>
-                                <a href="#" className="mt-5 badge bg-primary rounded-pill">edit</a>
-                            </li>
-                            <li className="list-group-item d-flex justify-content-between align-items-start">
-                                <a href="patientdetail.php?patient_id=' . $name . '" className="ms-2 me-auto">
-                                    <div className="fw-bold">' . $name . '</div>
-                                    <div className="">' . $email . '</div>
-                                    <div className="">' . $phone . '</div>
-                                </a>
-                                <a href="#" className="mt-5 badge bg-primary rounded-pill">edit</a>
-                            </li>
-                            <li className="list-group-item d-flex justify-content-between align-items-start">
-                                <a href="patientdetail.php?patient_id=' . $name . '" className="ms-2 me-auto">
+                                <a href="" className="ms-2 me-auto">
                                     <div className="fw-bold">' . $name . '</div>
                                     <div className="">' . $email . '</div>
                                     <div className="">' . $phone . '</div>

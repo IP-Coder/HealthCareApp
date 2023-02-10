@@ -10,6 +10,8 @@ import Box from '@mui/material/Box';
 import Hhome from './Hhome';
 import HPateint from './HPateint';
 import HnMember from './HnMember';
+import { useNavigate } from 'react-router-dom';
+import Alerts from '../Alerts/Alerts';
 
 
 function TabPanel(props) {
@@ -45,45 +47,52 @@ function a11yProps(index) {
     };
 }
 
-export default function FullWidtTabs() {
+export default function FullWidtTabs(props) {
+
     const theme = useTheme();
     const [value, setValue] = React.useState(0);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
+    let history = useNavigate();
+    // const handleChangeIndex = (index) => {
+    //     setValue(index);
+    // };
 
-    const handleChangeIndex = (index) => {
-        setValue(index);
-    };
+    if (localStorage.getItem('authtoken') !== null) {
+        return (
+            <Box sx={{ bgcolor: 'background.paper', marginTop: "4rem" }}>
+                <AppBar position="static">
+                    <Tabs
+                        value={value}
+                        onChange={handleChange}
+                        indicatorColor="secondary"
+                        textColor="inherit"
+                        variant="fullWidth"
+                        aria-label="full width tabs example"
+                    >
+                        <Tab label="Home" {...a11yProps(0)} />
+                        <Tab label="Member" {...a11yProps(1)} />
+                        <Tab label="Patient" {...a11yProps(2)} />
+                    </Tabs>
+                </AppBar>
 
-    return (
-        <Box sx={{ bgcolor: 'background.paper', marginTop: "4rem" }}>
-            <AppBar position="static">
-                <Tabs
-                    value={value}
-                    onChange={handleChange}
-                    indicatorColor="secondary"
-                    textColor="inherit"
-                    variant="fullWidth"
-                    aria-label="full width tabs example"
-                >
-                    <Tab label="Home" {...a11yProps(0)} />
-                    <Tab label="Member" {...a11yProps(1)} />
-                    <Tab label="Patient" {...a11yProps(2)} />
-                </Tabs>
-            </AppBar>
+                <TabPanel value={value} index={0} dir={theme.direction}>
+                    <Hhome showAlert={props.showAlert} />
+                </TabPanel>
+                <TabPanel value={value} index={1} dir={theme.direction}>
+                    <HnMember showAlert={props.showAlert} />
+                </TabPanel>
+                <TabPanel value={value} index={2} dir={theme.direction}>
+                    <HPateint />
+                </TabPanel>
 
-            <TabPanel value={value} index={0} dir={theme.direction}>
-                <Hhome />
-            </TabPanel>
-            <TabPanel value={value} index={1} dir={theme.direction}>
-                <HnMember />
-            </TabPanel>
-            <TabPanel value={value} index={2} dir={theme.direction}>
-                <HPateint />
-            </TabPanel>
+            </Box>
+        );
+    }
+    else {
 
-        </Box>
-    );
+        props.showAlert("Please Login First", "error");
+    }
 }

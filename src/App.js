@@ -7,23 +7,37 @@ import {
   Routes,
   Route,
 } from "react-router-dom";
-import Text from './components/Hospital/Text';
+
 import PatientLogin from './components/Authorization/PatientLogin';
 import Hospital from './components/Hospital/Hospital';
 import SplashScreen from './components/Authorization/SplashScreen';
+import DescriptionAlerts from './components/Alerts/Alerts';
+import { useState } from 'react';
 
 function App() {
+  let [alert, setAlert] = useState(null);
+  const showAlert = (msg, type) => {
+    setAlert({
+      type: type,
+      msg: msg
+    })
+    setTimeout(() => {
+      setAlert(null);
+    }, 3000);
+  }
+
   return (
     <>
       <Router>
         <Navebar />
+        <DescriptionAlerts alert={alert} />
         <Routes>
           <Route exact path="/" element={<SplashScreen />} />
           <Route exact path="/signup" element={<Signup />} />
           <Route exact path="/login" element={<Login />} />
-          <Route exact path="/Hospital" element={<Hospital />} />
+          <Route exact path="/Hospital" element={<Hospital showAlert={showAlert} />} />
           <Route exact path="/patientlogin" element={<PatientLogin />} />
-          <Route exact path="/text" element={<Text />} />
+          <Route exact path="/alert" element={<DescriptionAlerts />} />
         </Routes>
       </Router >
 

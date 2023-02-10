@@ -11,7 +11,7 @@ const functions = require('../Functions/function'); // Importing the function fi
 let success = false; // Variable to check if the user is created or not
 router.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "http://localhost:3000");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept,auth-token");
     next();
 }); // Middleware to allow cross origin requests
 
@@ -45,7 +45,8 @@ router.post('/createuser', [
                 email: email,
                 password: SecurePassword,
                 mobile: req.body.mobile,
-                type: req.body.type
+                type: req.body.type,
+                createdbyHosp: req.body.createdbyHosp
 
 
             }) // Creating user to the database
@@ -104,20 +105,6 @@ router.post('/authuser', [
         }
     });
 
-
-//Request to authenticate a user
-router.post('/getuser', fetchuser,
-    async (req, res) => {
-        try {
-            userId = req.user.id;
-            const user = await UserSchema.findById(userId).select("-password");
-            res.send(user);
-        } catch (error) {
-            console.error(error.message);
-            res.status(500).send('Internal Server Error');
-        }
-
-    });
 
 //Sending mail to reset password
 

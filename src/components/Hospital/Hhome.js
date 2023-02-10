@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-export default function Hhome() {
+export default function Hhome(props) {
 
     const [selectedCheks, setSelectedCheks] = useState([]);
     const [PatientData, setPatientData] = useState({ pname: "", country: "", gender: "", phone: "", age: "" });
@@ -32,16 +32,14 @@ export default function Hhome() {
                     headers: { 'Content-Type': 'application/json' },
                 });
                 const data = await response.json();
-                console.log(data)
-                // if (data.success) {
-                //     localStorage.setItem('authtoken', data.authtoken);
-                //     // redirect to protected page 
-                //     history('/Hhome')
-                //     console.log("Hello")
+                // console.log(data.errors[0].msg)
+                if (data.errors) {
+                    props.showAlert(data.errors[0].msg, "danger");
+                }
+                else {
 
-                // } else {
-                //     // display error message
-                // }
+                    props.showAlert("Patient Added Successfully", "success");
+                }
             } catch (err) {
                 console.error(err);
             }
@@ -797,7 +795,6 @@ export default function Hhome() {
                         </div>
                     </form>
                 </div>
-
             </section></>
     )
 }

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Stack from '@mui/material/Stack';
+import LinearProgress from '@mui/material/LinearProgress';
 const SplashScreen = (props) => {
     let history = useNavigate();
     const [isLoggedIn, setIsLoggedIn] = useState();
@@ -35,10 +37,21 @@ const SplashScreen = (props) => {
     }, [isLoggedIn]);
 
     return (
-        <div>
-            Loading...
+        <div class="splash">
+            <div class="splash-image">
+                <img src="/Design/favicon.webp" width="505" alt="Splash Image" />
+                <h3>Loading...</h3>
+                <Stack sx={{ width: '100%', color: 'grey.500' }} spacing={2}>
+                    <LinearProgress color="secondary" />
+                    <LinearProgress color="success" />
+                    <LinearProgress color="inherit" />
+                </Stack>
+            </div>
         </div>
     );
 };
 
 export default SplashScreen;
+
+
+

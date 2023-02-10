@@ -29,7 +29,6 @@ const UserSchema = new Schema({
     },
     createdbyHosp: {
         type: String,
-        required: true
     },
     date: {
         type: Date,
